@@ -1,6 +1,4 @@
 package com.example.Green_Shadow_BackEnd.controller;
-
-
 import com.example.Green_Shadow_BackEnd.dto.impl.FieldDto;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.service.FieldService;
@@ -41,9 +39,7 @@ public class FieldController {
 
             byte [] bytesProPic2 = image2.getBytes();
             base64ProPic2 = AppUtil.profilePicToBase64(bytesProPic2);
-            //UserId generate
 
-            //Build the Object
             FieldDto buildFieldDto = new FieldDto();
             buildFieldDto.setCode(code);
             buildFieldDto.setName(name);

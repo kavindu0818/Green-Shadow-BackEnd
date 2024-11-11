@@ -21,7 +21,7 @@ public class CropEntity implements SuperEntity {
 
     private String scientificName;
 
-    @Lob
+//    @Lob
     private String image;
 
     private String category;
@@ -29,7 +29,8 @@ public class CropEntity implements SuperEntity {
     private String season;
 
     @ManyToOne
-    @JoinColumn(name = "fieldId",nullable = false)
+    @JoinColumn(name = "field_id") // or the appropriate column name
     private FieldEntity field;
+
 
 }

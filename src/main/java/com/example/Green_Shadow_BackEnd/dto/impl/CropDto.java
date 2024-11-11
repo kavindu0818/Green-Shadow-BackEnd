@@ -10,17 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-
 public class CropDto implements CropStatus {
 
-    @Id
     private String code;
 
     private String commonName;
 
     private String scientificName;
 
-    @Lob
     private String image;
 
     private String category;

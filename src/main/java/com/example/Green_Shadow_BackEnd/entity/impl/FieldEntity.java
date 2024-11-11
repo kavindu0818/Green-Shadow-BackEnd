@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,14 +23,15 @@ public class FieldEntity implements SuperEntity {
 
     private Double extent;
 
-    @Lob
+//    @Lob
     private String image1;
 
-    @Lob
+//    @Lob
     private String image2;
 
-    @OneToMany(mappedBy = "crop")
-    private List<CropEntity> crops;
+    @OneToMany(mappedBy = "field") // or similar
+    private Set<CropEntity> crops;
+
 
 
 
