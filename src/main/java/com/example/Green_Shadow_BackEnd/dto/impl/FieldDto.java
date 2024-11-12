@@ -22,7 +22,10 @@ public class FieldDto implements FieldStatus {
 
     private Double extent;
 
+    @Lob
     private String image1;
+
+    @Lob
     private String image2;
 
     private List<CropDto> cropDto;
