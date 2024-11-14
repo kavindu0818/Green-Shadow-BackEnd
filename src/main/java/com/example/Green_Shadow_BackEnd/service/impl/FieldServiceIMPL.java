@@ -1,10 +1,10 @@
 package com.example.Green_Shadow_BackEnd.service.impl;
-
 import com.example.Green_Shadow_BackEnd.customStatusCodes.SelectedAllError;
 import com.example.Green_Shadow_BackEnd.dao.FieldDao;
 import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.FieldDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
+import com.example.Green_Shadow_BackEnd.exception.CropNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.service.FieldService;
@@ -55,7 +55,7 @@ public class FieldServiceIMPL implements FieldService {
     public void deleteNote(String fieldId) {
         Optional<FieldEntity> foundNote = fieldDao.findById(fieldId);
         if (!foundNote.isPresent()) {
-            throw new FieldNotFoundException("Field not found");
+            throw new CropNotFoundException("Field not found");
         }else {
             fieldDao.deleteById(fieldId);
         }

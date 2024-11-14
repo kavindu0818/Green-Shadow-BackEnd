@@ -3,8 +3,10 @@ package com.example.Green_Shadow_BackEnd.util;
 
 import com.example.Green_Shadow_BackEnd.dto.impl.CropDto;
 import com.example.Green_Shadow_BackEnd.dto.impl.FieldDto;
+import com.example.Green_Shadow_BackEnd.dto.impl.VehicleDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.CropEntity;
 import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
+import com.example.Green_Shadow_BackEnd.entity.impl.VehicleEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +41,15 @@ public class Mapping {
         return modelMapper.map(cropEntities, new TypeToken<List<CropDto>>() {}.getType());
     }
 
+    public VehicleEntity toVehicleEntity(VehicleDto vehicleDto) {
+        return modelMapper.map(vehicleDto, VehicleEntity.class);
+    }
+
+    public VehicleDto toVehicleDTO(VehicleEntity vehicleEntity) {
+        return modelMapper.map(vehicleEntity, VehicleDto.class);
+    }
+    public List<VehicleDto> asVehicleDTOList(List<VehicleEntity> vehicleEntities) {
+        return modelMapper.map(vehicleEntities, new TypeToken<List<VehicleDto>>() {}.getType());
+    }
 
 }
