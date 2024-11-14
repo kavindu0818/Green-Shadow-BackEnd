@@ -1,19 +1,19 @@
 package com.example.Green_Shadow_BackEnd.controller;
 
+import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.FieldDto;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
+import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.service.FieldService;
 import com.example.Green_Shadow_BackEnd.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/field")
@@ -56,5 +56,54 @@ public class FieldController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    @PutMapping(value = "/{fieldId}")
+    public ResponseEntity<Void> updateNote(@PathVariable ("noteId") String fieldId,
+                                           @RequestBody FieldDto updateFieldDTO){
+        //validations
+        try {
+//            if(!RegexProcess.noteIdMatcher(noteId) || updateFieldDTO == null){
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            }
+            fieldService.updateField(fieldId,updateFieldDTO);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (FieldNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping(value = "/{fieldId}")
+    public ResponseEntity<Void> deleteNote(@PathVariable ("noteId") String fieldId){
+        try {
+//            if (!RegexProcess.noteIdMatcher(fieldId)) {
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            }
+            fieldService.deleteNote(fieldId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (FieldNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/{fieldID}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public FieldStatus getSelectedNote(@PathVariable("fieldID") String fieldId){
+//        if (!RegexProcess.noteIdMatcher(noteId)) {
+//            return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
+//        }
+        return fieldService.getField(fieldId);
+    }
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<FieldDto> getALlNotes(){
+        return fieldService.getAllField();
     }
 }

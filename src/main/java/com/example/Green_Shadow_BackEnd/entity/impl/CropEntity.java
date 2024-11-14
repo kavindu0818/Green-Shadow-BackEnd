@@ -1,12 +1,9 @@
 package com.example.Green_Shadow_BackEnd.entity.impl;
-
 import com.example.Green_Shadow_BackEnd.entity.SuperEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -21,7 +18,8 @@ public class CropEntity implements SuperEntity {
 
     private String scientificName;
 
-//    @Lob
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String image;
 
     private String category;
