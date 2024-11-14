@@ -18,6 +18,7 @@ public class CropDto implements CropStatus {
 
     private String scientificName;
 
+    @Lob
     private String image;
 
     private String category;
