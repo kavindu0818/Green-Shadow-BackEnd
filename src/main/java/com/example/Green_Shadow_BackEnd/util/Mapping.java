@@ -2,14 +2,8 @@ package com.example.Green_Shadow_BackEnd.util;
 
 
 import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
-import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
-import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
-import com.example.Green_Shadow_BackEnd.dto.impl.StaffDto;
-import com.example.Green_Shadow_BackEnd.dto.impl.VehicleDto;
-import com.example.Green_Shadow_BackEnd.entity.impl.CropEntity;
-import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
-import com.example.Green_Shadow_BackEnd.entity.impl.StaffEntity;
-import com.example.Green_Shadow_BackEnd.entity.impl.VehicleEntity;
+import com.example.Green_Shadow_BackEnd.dto.impl.*;
+import com.example.Green_Shadow_BackEnd.entity.impl.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +57,16 @@ public class Mapping {
     }
     public List<StaffDto> asStaffDTOList(List<StaffEntity> staffEntities) {
         return modelMapper.map(staffEntities, new TypeToken<List<StaffDto>>() {}.getType());
+    }
+
+    public EquipmentEntity toEquimentEntity(EquipmentDto equipmentDto) {
+        return modelMapper.map(equipmentDto, EquipmentEntity.class);
+    }
+
+    public EquipmentDto toEquimentDTO(EquipmentEntity equipmentEntity) {
+        return modelMapper.map(equipmentEntity, EquipmentDto.class);
+    }
+    public List<EquipmentDto> asEquimentDTOList(List<EquipmentEntity> equipmentEntities) {
+        return modelMapper.map(equipmentEntities, new TypeToken<List<EquipmentDto>>() {}.getType());
     }
 }

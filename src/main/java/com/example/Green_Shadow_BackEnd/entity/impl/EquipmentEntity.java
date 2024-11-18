@@ -1,6 +1,5 @@
 package com.example.Green_Shadow_BackEnd.entity.impl;
 
-import com.example.Green_Shadow_BackEnd.dto.EquipmentStatus;
 import com.example.Green_Shadow_BackEnd.entity.SuperEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

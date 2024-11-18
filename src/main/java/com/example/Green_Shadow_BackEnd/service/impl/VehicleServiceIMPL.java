@@ -44,12 +44,13 @@ public class VehicleServiceIMPL implements VehicleService {
         if (!findVehicle.isPresent()) {
             throw new FieldNotFoundException("Vehicle Not Found");
         }else {
-            findVehicle.get().setVehicleCode(vehicleDto.getCode());
-            findVehicle.get().setLicensePlateNum(vehicleDto.getLicensePlateNumber());
+            findVehicle.get().setCode(vehicleDto.getCode());
+            findVehicle.get().setLicensePlateNum(vehicleDto.getLicensePlateNum());
             findVehicle.get().setCategory(vehicleDto.getCategory());
             findVehicle.get().setFuelType(vehicleDto.getFuelType());
             findVehicle.get().setStatus(vehicleDto.getStatus());
             findVehicle.get().setRemarks(vehicleDto.getRemarks());
+//            findVehicle.get().setSt(vehicleDto.getStaffId());
         }
 
         vehicleDao.save(mapping.toVehicleEntity(vehicleDto));

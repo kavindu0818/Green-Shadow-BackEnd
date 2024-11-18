@@ -9,11 +9,11 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "vehicle")
+//@Table(name = "vehicle")
 public class VehicleEntity implements SuperEntity {
 
     @Id
-    String vehicleCode;
+    String code;
     String licensePlateNum;
     String category;
     String fuelType;

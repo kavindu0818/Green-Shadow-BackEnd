@@ -14,16 +14,10 @@ public class VehicleDto implements VehicleStatus {
 
     @Id
     private String code;
-
-    private String licensePlateNumber;
-
+    private String licensePlateNum;
     private String category;
-
     private String fuelType;
-
     private String status;
-
-//    private List<StaffEntity> allocatedStaffMembers;
-
     private String remarks;
+    private String staffId;
 }

@@ -27,11 +27,12 @@ public class VehicleController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveVehicle(
             @RequestParam("code") String code,
-            @RequestParam("licensePlateNumber") String licensePlateNumber,
+            @RequestParam("licensePlateNum") String licensePlateNum,
             @RequestParam("category") String category,
             @RequestPart("fuelType") String fuelType,
             @RequestParam("status") String status,
-            @RequestParam("remarks") String remarks
+            @RequestParam("remarks") String remarks,
+            @RequestParam("staffId") String staffId
 
     ) {
         try {
@@ -39,11 +40,12 @@ public class VehicleController {
             // Build DTO
             VehicleDto vehicleDto = new VehicleDto();
             vehicleDto.setCode(code);
-            vehicleDto.setLicensePlateNumber(licensePlateNumber);
+            vehicleDto.setLicensePlateNum(licensePlateNum);
             vehicleDto.setCategory(category);
             vehicleDto.setFuelType(fuelType);
             vehicleDto.setStatus(status);
             vehicleDto.setRemarks(remarks);
+            vehicleDto.setStaffId(staffId);
 
             // Save field
             vehicleService.saveVehicle(vehicleDto);

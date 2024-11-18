@@ -1,4 +1,4 @@
 package com.example.Green_Shadow_BackEnd.exception;
 
-public class EquipmentNotFoundException {
+public class EquipmentNotFoundException extends RuntimeException {
 }
