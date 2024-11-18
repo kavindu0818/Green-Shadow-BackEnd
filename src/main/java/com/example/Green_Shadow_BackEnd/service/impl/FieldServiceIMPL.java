@@ -2,7 +2,7 @@ package com.example.Green_Shadow_BackEnd.service.impl;
 import com.example.Green_Shadow_BackEnd.customStatusCodes.SelectedAllError;
 import com.example.Green_Shadow_BackEnd.dao.FieldDao;
 import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
-import com.example.Green_Shadow_BackEnd.dto.impl.FieldDto;
+import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
 import com.example.Green_Shadow_BackEnd.exception.CropNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
@@ -30,7 +30,7 @@ public class FieldServiceIMPL implements FieldService {
     private Mapping mapping;
 
     @Override
-    public void saveField(FieldDto fieldDto) {
+    public void saveField(FieldEntityDto fieldDto) {
         FieldEntity savedUser =
                 fieldDao.save(mapping.toFieldEntity(fieldDto));
         if (savedUser == null) {
@@ -38,21 +38,21 @@ public class FieldServiceIMPL implements FieldService {
         }
     }
     @Override
-    public void updateField(String noteId, FieldDto fieldDto) {
+    public void updateField(String noteId, FieldEntityDto fieldDto) {
         Optional<FieldEntity> findNote = fieldDao.findById(noteId);
         if (!findNote.isPresent()) {
             throw new FieldNotFoundException("Field Not Found");
         }else {
-            findNote.get().setCode(fieldDto.getCode());
-            findNote.get().setName(fieldDto.getName());
-            findNote.get().setLocation(fieldDto.getLocation());
-            findNote.get().setExtent(fieldDto.getExtent());
-            findNote.get().setImage1(fieldDto.getImage1());
-            findNote.get().setImage2(fieldDto.getImage2());
+            findNote.get().setFieldCode(fieldDto.getFieldCode());
+            findNote.get().setFieldName(fieldDto.getFieldName());
+            findNote.get().setFieldLocation(fieldDto.getFieldLocation());
+            findNote.get().setFieldSize(fieldDto.getFieldSize());
+            findNote.get().setFieldImage(fieldDto.getFieldImage());
+//            findNote.get().setImage2(fieldDto.getImage2());
         }
     }
     @Override
-    public void deleteNote(String fieldId) {
+    public void deleteField(String fieldId) {
         Optional<FieldEntity> foundNote = fieldDao.findById(fieldId);
         if (!foundNote.isPresent()) {
             throw new CropNotFoundException("Field not found");
@@ -61,16 +61,15 @@ public class FieldServiceIMPL implements FieldService {
         }
     }
     @Override
-    public FieldStatus getField(String fieldId) {
-        if(fieldDao.existsById(fieldId)){
-            var selectedUser = fieldDao.getReferenceById(fieldId);
-            return mapping.toFieldDTO(selectedUser);
-        }else {
-            return new SelectedAllError("2","Select not Found");
+    public FieldEntityDto getField(String fieldId) {
+        if (fieldDao.existsById(fieldId)) {
+            var selectedField = fieldDao.getReferenceById(fieldId);
+            return mapping.toFieldDTO(selectedField);
         }
+        return null;
     }
     @Override
-    public List<FieldDto> getAllField() {
+    public List<FieldEntityDto> getAllField() {
         return mapping.asNoteDTOList( fieldDao.findAll());
     }
 

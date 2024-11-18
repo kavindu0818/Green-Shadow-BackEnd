@@ -2,7 +2,7 @@ package com.example.Green_Shadow_BackEnd.controller;
 
 import com.example.Green_Shadow_BackEnd.dto.CropStatus;
 import com.example.Green_Shadow_BackEnd.dto.VehicleStatus;
-import com.example.Green_Shadow_BackEnd.dto.impl.CropDto;
+
 import com.example.Green_Shadow_BackEnd.dto.impl.VehicleDto;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;

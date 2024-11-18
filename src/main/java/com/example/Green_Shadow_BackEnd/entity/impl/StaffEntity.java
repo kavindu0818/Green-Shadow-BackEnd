@@ -1,12 +1,9 @@
 package com.example.Green_Shadow_BackEnd.entity.impl;
 
+import com.example.Green_Shadow_BackEnd.dto.impl.StaffDto;
 import com.example.Green_Shadow_BackEnd.entity.SuperEntity;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,54 +11,43 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "staff")
 public class StaffEntity implements SuperEntity {
     @Id
-    private String id; // Unique code for each staff member
-    private String firstName;
-    private String lastName;
-
+    String id;
+    String firstName;
+    String lastName;
+    String designation;
     @Enumerated(EnumType.STRING)
-    private Designation designation;
-
+    StaffDto.Gender gender;
+    Date joinedDate;
+    Date dob;
+    String address;
+    String contact;
+    String email;
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    Role role;  // Update this to your custom enum type
 
-    private Date joinedDate;
-    private Date dob;
-    private String addressLine1;
-    private String addressLine2;
-    private String addressLine3;
-    private String addressLine4;
-    private String addressLine5;
-    private String contactNo;
-    private String email;
+    @ManyToMany
+    @JoinTable(
+            name = "staff_field",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "field_code")
+    )
+    List<FieldEntity> fields;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @OneToMany(mappedBy = "staff")
+    List<VehicleEntity> vehicleEntities;
 
-    @ElementCollection
-    private List<String> fieldList; // Allocated fields, if not, add "N/A"
+    @OneToMany(mappedBy = "staff")
+    List<EquipmentEntity> equipmentEntityList;
 
-    @ElementCollection
-    private List<String> vehicleList; // Allocated vehicles, if not, add "N/A"
+    @OneToOne(mappedBy = "staffEntity")
+    MonitorLogEntity log;
 
-    // Enum for Gender
-    public enum Gender {
-        MALE, FEMALE, OTHER
-    }
-
-    // Enum for Designation
-    public enum Designation {
-        MANAGER, ENGINEER, TECHNICIAN, SUPPORT, OTHER
-    }
-
-    // Enum for Role
-    public enum Role {
-        ADMIN, USER, SUPERVISOR, GUEST, OTHER
+    public void setRole(StaffDto.Role role) {
     }
 }

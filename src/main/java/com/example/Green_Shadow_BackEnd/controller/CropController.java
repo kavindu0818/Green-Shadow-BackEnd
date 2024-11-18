@@ -1,8 +1,7 @@
 package com.example.Green_Shadow_BackEnd.controller;
 import com.example.Green_Shadow_BackEnd.dto.CropStatus;
 import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
-import com.example.Green_Shadow_BackEnd.dto.impl.CropDto;
-import com.example.Green_Shadow_BackEnd.dto.impl.FieldDto;
+import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.service.CropService;
@@ -26,30 +25,30 @@ public class CropController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveField(
-            @RequestParam("code") String code,
-            @RequestParam("commonName") String name,
-            @RequestParam("scientificName") String sciName,
+            @RequestParam("cropCode") String cropCode,
+            @RequestParam("commonName") String commonName,
+            @RequestParam("scientificName") String scientificName,
             @RequestPart("image") MultipartFile image,
             @RequestParam("category") String category,
             @RequestParam("season") String season,
-            @RequestParam("field") String fieldId // Changed to @RequestParam
+            @RequestParam("field_code") String field_code // Changed to @RequestParam
     ) {
         try {
             // Convert image to Base64
             String base64ProPic1 = AppUtil.profilePicToBase64(image.getBytes());
 
             // Build DTO
-            CropDto cropDto = new CropDto();
-            cropDto.setCode(code);
-            cropDto.setCommonName(name);
-            cropDto.setScientificName(sciName);
-            cropDto.setImage(base64ProPic1);
-            cropDto.setCategory(category);
-            cropDto.setSeason(season);
-            cropDto.setFieldId(fieldId); // Set fieldId properly
+            CropEntityDto cropEntityDto = new CropEntityDto();
+            cropEntityDto.setCropCode(cropCode);
+            cropEntityDto.setCommonName(commonName);
+            cropEntityDto.setScientificName(scientificName);
+            cropEntityDto.setImage(base64ProPic1);
+            cropEntityDto.setCategory(category);
+            cropEntityDto.setSeason(season);
+            cropEntityDto.setFieldCode(field_code); // Set fieldId properly
 
             // Save field
-            cropService.saveCrop(cropDto);
+            cropService.saveCrop(cropEntityDto);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataPersistException e) {
@@ -63,7 +62,7 @@ public class CropController {
 
     @PutMapping(value = "/{cropId}")
     public ResponseEntity<Void> updateNote(@PathVariable ("cropId") String cropId,
-                                           @RequestBody CropDto cropDto){
+                                           @RequestBody CropEntityDto cropDto){
         //validations
         try {
 //            if(!RegexProcess.noteIdMatcher(noteId) || updateFieldDTO == null){
@@ -98,14 +97,14 @@ public class CropController {
     }
 
     @GetMapping(value = "/{cropId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public CropStatus getSelectedCrop(@PathVariable("cropId") String cropID){
+    public CropEntityDto getSelectedCrop(@PathVariable("cropId") String cropID){
 //        if (!RegexProcess.noteIdMatcher(noteId)) {
 //            return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
 //        }
         return cropService.getCrop(cropID);
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CropDto> getALlCrops(){
+    public List<CropEntityDto> getALlCrops(){
         return cropService.getAllCrop();
     }
 

@@ -1,18 +1,19 @@
 package com.example.Green_Shadow_BackEnd.service;
 
 import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
-import com.example.Green_Shadow_BackEnd.dto.impl.FieldDto;
+
+import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
 
 import java.util.List;
 
 public interface FieldService {
-    void saveField(FieldDto fieldDto);
+    void saveField(FieldEntityDto fieldDto);
 
-    void updateField(String noteId, FieldDto fieldDto);
+    void updateField(String noteId, FieldEntityDto fieldDto);
 
-    void deleteNote(String fieldId);
+    void deleteField(String fieldId);
 
-    FieldStatus getField(String fieldId);
+    FieldEntityDto getField(String fieldId);
 
-    List<FieldDto> getAllField();
+    List<FieldEntityDto> getAllField();
 }

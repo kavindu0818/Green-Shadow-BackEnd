@@ -1,7 +1,7 @@
 package com.example.Green_Shadow_BackEnd.controller;
 
 import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
-import com.example.Green_Shadow_BackEnd.dto.impl.FieldDto;
+import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.service.FieldService;
@@ -24,26 +24,26 @@ public class FieldController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveField(
-            @RequestParam("code") String code,
-            @RequestParam("name") String name,
-            @RequestParam("location") String location,
-            @RequestParam("extent") Double extent,
-            @RequestPart("image1") MultipartFile image1,
-            @RequestPart("image2") MultipartFile image2
+            @RequestParam("fieldCode") String fieldCode,
+            @RequestParam("fieldName") String fieldName,
+            @RequestParam("fieldLocation") String fieldLocation,
+            @RequestParam("fieldSize") Double fieldSize,
+            @RequestPart("fieldImage") MultipartFile fieldImage1
+
     ) {
         try {
             // Convert images to Base64
-            String base64ProPic1 = AppUtil.profilePicToBase64(image1.getBytes());
-            String base64ProPic2 = AppUtil.profilePicToBase64(image2.getBytes());
+            String base64ProPic1 = AppUtil.profilePicToBase64(fieldImage1.getBytes());
+
 
             // Build DTO
-            FieldDto buildFieldDto = new FieldDto();
-            buildFieldDto.setCode(code);
-            buildFieldDto.setName(name);
-            buildFieldDto.setLocation(location);
-            buildFieldDto.setExtent(extent);
-            buildFieldDto.setImage1(base64ProPic1);
-            buildFieldDto.setImage2(base64ProPic2);
+            FieldEntityDto buildFieldDto = new FieldEntityDto();
+            buildFieldDto.setFieldCode(fieldCode);
+            buildFieldDto.setFieldName(fieldName);
+            buildFieldDto.setFieldLocation(fieldLocation);
+            buildFieldDto.setFieldSize(fieldSize);
+            buildFieldDto.setFieldImage(base64ProPic1);
+//            buildFieldDto.setImage2(base64ProPic2);
 
             // Save field
             fieldService.saveField(buildFieldDto);
@@ -60,8 +60,8 @@ public class FieldController {
 
 
     @PutMapping(value = "/{fieldId}")
-    public ResponseEntity<Void> updateNote(@PathVariable ("noteId") String fieldId,
-                                           @RequestBody FieldDto updateFieldDTO){
+    public ResponseEntity<Void> updateNote(@PathVariable ("fieldId") String fieldId,
+                                           @RequestBody FieldEntityDto updateFieldDTO){
         //validations
         try {
 //            if(!RegexProcess.noteIdMatcher(noteId) || updateFieldDTO == null){
@@ -79,12 +79,12 @@ public class FieldController {
     }
 
     @DeleteMapping(value = "/{fieldId}")
-    public ResponseEntity<Void> deleteNote(@PathVariable ("noteId") String fieldId){
+    public ResponseEntity<Void> deleteField(@PathVariable ("fieldId") String fieldId){
         try {
 //            if (!RegexProcess.noteIdMatcher(fieldId)) {
 //                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //            }
-            fieldService.deleteNote(fieldId);
+            fieldService.deleteField(fieldId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (FieldNotFoundException e){
             e.printStackTrace();
@@ -96,14 +96,14 @@ public class FieldController {
     }
 
     @GetMapping(value = "/{fieldID}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public FieldStatus getSelectedNote(@PathVariable("fieldID") String fieldId){
+    public FieldEntityDto getSelectedNote(@PathVariable("fieldID") String fieldId){
 //        if (!RegexProcess.noteIdMatcher(noteId)) {
 //            return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
 //        }
         return fieldService.getField(fieldId);
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FieldDto> getALlNotes(){
+    public List<FieldEntityDto> getALlNotes(){
         return fieldService.getAllField();
     }
 }

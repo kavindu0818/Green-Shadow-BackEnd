@@ -1,34 +1,33 @@
 package com.example.Green_Shadow_BackEnd.entity.impl;
+
 import com.example.Green_Shadow_BackEnd.entity.SuperEntity;
+import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
+import com.example.Green_Shadow_BackEnd.entity.impl.MonitorLogEntity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "crop")
+@Table(name = "crop_entity")
 public class CropEntity implements SuperEntity {
-
     @Id
-    private String code;
-
-    private String commonName;
-
-    private String scientificName;
-
-    @Lob
+    String cropCode;
+    String commonName;
+    String scientificName;
     @Column(columnDefinition = "LONGTEXT")
-    private String image;
+    String image;
+    String category;
+    String season;
 
-    private String category;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "field_code" , nullable = false)
+    FieldEntity fieldEntity;
 
-    private String season;
-
-    @ManyToOne
-    @JoinColumn(name = "field_id") // or the appropriate column name
-    private FieldEntity field;
-
-
+    @OneToOne(mappedBy = "cropEntity" )
+    MonitorLogEntity log;
 }

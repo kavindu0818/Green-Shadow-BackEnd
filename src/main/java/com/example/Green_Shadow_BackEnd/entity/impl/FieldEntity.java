@@ -5,32 +5,31 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Set;
 
+import java.util.List;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "field")
 public class FieldEntity implements SuperEntity {
-
     @Id
-    private String code;
+    String fieldCode;
+    String fieldName;
+    String fieldLocation;
+    double  fieldSize;
+    @Column(columnDefinition = "LONGTEXT")
+    String fieldImage;
+    @OneToMany(mappedBy = "fieldEntity")
+    List<CropEntity> cropEntityList;
 
-    private String name;
+    @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    List<StaffEntity> staffEntityList;
 
-    private String location;
-
-    private Double extent;
-
-    @Lob
-    @Column(columnDefinition = "LONGTEXT") // Adjust the column size for large text data
-    private String image1;
-
-    @Lob
-    @Column(columnDefinition = "LONGTEXT") // Adjust the column size for large text data
-    private String image2;
 
     @OneToMany(mappedBy = "field")
-    private Set<CropEntity> crops;
+    List<EquipmentEntity> equipmentEntityList;
+
+    @OneToOne(mappedBy = "fieldEntity" )
+    MonitorLogEntity log;
 }

@@ -1,16 +1,10 @@
 package com.example.Green_Shadow_BackEnd.entity.impl;
-
 import com.example.Green_Shadow_BackEnd.entity.SuperEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,17 +13,15 @@ import java.util.List;
 public class VehicleEntity implements SuperEntity {
 
     @Id
-    private String code;
+    String vehicleCode;
+    String licensePlateNum;
+    String category;
+    String fuelType;
+    String status;
+    String remarks;
 
-    private String licensePlateNumber;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    StaffEntity staff;
 
-    private String category;
-
-    private String fuelType;
-
-    private String status;
-
-//    private List<StaffEntity> allocatedStaffMembers;
-
-    private String remarks;
 }
