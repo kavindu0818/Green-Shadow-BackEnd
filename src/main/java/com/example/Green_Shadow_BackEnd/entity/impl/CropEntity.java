@@ -1,9 +1,6 @@
 package com.example.Green_Shadow_BackEnd.entity.impl;
 
 import com.example.Green_Shadow_BackEnd.entity.SuperEntity;
-import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
-import com.example.Green_Shadow_BackEnd.entity.impl.MonitorLogEntity;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
