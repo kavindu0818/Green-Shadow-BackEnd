@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/field")
+@CrossOrigin(origins = "http://localhost:63342")
 public class FieldController {
 
     @Autowired
@@ -28,9 +29,14 @@ public class FieldController {
             @RequestParam("fieldName") String fieldName,
             @RequestParam("fieldLocation") String fieldLocation,
             @RequestParam("fieldSize") Double fieldSize,
-            @RequestPart("fieldImage") MultipartFile fieldImage1
+            @RequestPart("fieldImage") MultipartFile fieldImage1,
+            @RequestParam("cropEntityList") String cropEntityList,
+            @RequestParam("staffEntityList") String staffEntityList,
+            @RequestParam("equipmentEntityList") String equipmentEntityList
 
-    ) {
+
+
+            ) {
         try {
             // Convert images to Base64
             String base64ProPic1 = AppUtil.profilePicToBase64(fieldImage1.getBytes());
@@ -43,6 +49,9 @@ public class FieldController {
             buildFieldDto.setFieldLocation(fieldLocation);
             buildFieldDto.setFieldSize(fieldSize);
             buildFieldDto.setFieldImage(base64ProPic1);
+            buildFieldDto.setCropCodes(cropEntityList);
+            buildFieldDto.setStaffCodes(staffEntityList);
+            buildFieldDto.setEquipmentCodes(equipmentEntityList);
 //            buildFieldDto.setImage2(base64ProPic2);
 
             // Save field

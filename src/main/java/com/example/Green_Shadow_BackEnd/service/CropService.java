@@ -1,6 +1,5 @@
 package com.example.Green_Shadow_BackEnd.service;
 
-import com.example.Green_Shadow_BackEnd.dto.CropStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
 
 

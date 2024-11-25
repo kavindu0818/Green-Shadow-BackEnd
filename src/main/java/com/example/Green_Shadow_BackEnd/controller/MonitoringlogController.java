@@ -1,9 +1,11 @@
 package com.example.Green_Shadow_BackEnd.controller;
 
+import com.example.Green_Shadow_BackEnd.dto.MonitoringLogStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
 import com.example.Green_Shadow_BackEnd.dto.impl.MonitorLogDto;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
+import com.example.Green_Shadow_BackEnd.exception.MonitorLogfoundException;
 import com.example.Green_Shadow_BackEnd.service.MonitorLogService;
 import com.example.Green_Shadow_BackEnd.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,17 +62,17 @@ public class MonitoringlogController {
         }
     }
 
-    @PutMapping(value = "/{cropId}")
-    public ResponseEntity<Void> updateNote(@PathVariable ("cropId") String cropId,
-                                           @RequestBody CropEntityDto cropDto){
+    @PutMapping(value = "/{monId}")
+    public ResponseEntity<Void> updateMonitorLog(@PathVariable ("monId") String monId,
+                                           @RequestBody MonitorLogDto monitorLogDto){
         //validations
         try {
 //            if(!RegexProcess.noteIdMatcher(noteId) || updateFieldDTO == null){
 //                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //            }
-            cropService.updateCrop(cropId,cropDto);
+            monitorLogService.updateMonitorLog(monId,monitorLogDto);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (FieldNotFoundException e){
+        }catch (MonitorLogfoundException e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
@@ -79,15 +81,15 @@ public class MonitoringlogController {
         }
     }
 
-    @DeleteMapping(value = "/{cropId}")
-    public ResponseEntity<Void> deleteNote(@PathVariable ("cropId") String cropId){
+    @DeleteMapping(value = "/{monId}")
+    public ResponseEntity<Void> deleteMonitor(@PathVariable ("monId") String monId){
         try {
 //            if (!RegexProcess.noteIdMatcher(fieldId)) {
 //                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //            }
-            cropService.deleteCrop(cropId);
+            monitorLogService.deleteMonitorLog(monId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (FieldNotFoundException e){
+        }catch (MonitorLogfoundException e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
@@ -96,16 +98,16 @@ public class MonitoringlogController {
         }
     }
 
-    @GetMapping(value = "/{cropId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public CropEntityDto getSelectedCrop(@PathVariable("cropId") String cropID){
+    @GetMapping(value = "/{monId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public MonitoringLogStatus getSelectedMonitor(@PathVariable("monId") String monID){
 //        if (!RegexProcess.noteIdMatcher(noteId)) {
 //            return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
 //        }
-        return cropService.getCrop(cropID);
+        return monitorLogService.getMonitorLog(monID);
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CropEntityDto> getALlCrops(){
-        return cropService.getAllCrop();
+    public List<MonitorLogDto> getALlMonitors(){
+        return monitorLogService.getAllMonitorLog();
     }
 
 

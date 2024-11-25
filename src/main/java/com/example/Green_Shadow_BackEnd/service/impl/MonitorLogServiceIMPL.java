@@ -1,6 +1,7 @@
 package com.example.Green_Shadow_BackEnd.service.impl;
 
 import com.example.Green_Shadow_BackEnd.dao.MonitoringLogDao;
+import com.example.Green_Shadow_BackEnd.dto.MonitoringLogStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.MonitorLogDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.CropEntity;
 import com.example.Green_Shadow_BackEnd.entity.impl.MonitorLogEntity;
@@ -10,6 +11,8 @@ import com.example.Green_Shadow_BackEnd.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,5 +31,25 @@ public class MonitorLogServiceIMPL implements MonitorLogService {
         if (monitorLogDto == null) {
             throw new DataPersistException("MonitorLogin not saved");
         }
+    }
+
+    @Override
+    public void updateMonitorLog(String monId, MonitorLogDto monitorLogDto) {
+
+    }
+
+    @Override
+    public void deleteMonitorLog(String monId) {
+
+    }
+
+    @Override
+    public MonitoringLogStatus getMonitorLog(String monID) {
+        return null;
+    }
+
+    @Override
+    public List<MonitorLogDto> getAllMonitorLog() {
+        return null;
     }
 }

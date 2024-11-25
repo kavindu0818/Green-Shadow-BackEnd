@@ -18,6 +18,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/crop")
+@CrossOrigin(origins = "http://localhost:63342")
+
 public class CropController {
 
     @Autowired
@@ -45,7 +47,7 @@ public class CropController {
             cropEntityDto.setImage(base64ProPic1);
             cropEntityDto.setCategory(category);
             cropEntityDto.setSeason(season);
-            cropEntityDto.setFieldCode(field_code); // Set fieldId properly
+            cropEntityDto.setField_Code(field_code); // Set fieldId properly
 
             // Save field
             cropService.saveCrop(cropEntityDto);
@@ -104,8 +106,12 @@ public class CropController {
         return cropService.getCrop(cropID);
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CropEntityDto> getALlCrops(){
-        return cropService.getAllCrop();
+    public ResponseEntity<List<CropEntityDto>> getAllCrops() {
+        List<CropEntityDto> crops = cropService.getAllCrop();
+        if (crops.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }
+        return ResponseEntity.ok(crops); // 200 OK
     }
 
 }
