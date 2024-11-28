@@ -1,5 +1,6 @@
 package com.example.Green_Shadow_BackEnd.service;
 
+import com.example.Green_Shadow_BackEnd.dto.CropStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
 
 
@@ -10,7 +11,7 @@ public interface CropService{
 
     void updateCrop(String cropId, CropEntityDto cropDto);
 
-    void deleteCrop(String fieldId);
+    void deleteCrop(String cropId);
 
 
     CropEntityDto getCrop(String cropID);

@@ -1,8 +1,10 @@
 package com.example.Green_Shadow_BackEnd.service.impl;
 
 import com.example.Green_Shadow_BackEnd.dao.CropDao;
+import com.example.Green_Shadow_BackEnd.dto.CropStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.CropEntity;
+import com.example.Green_Shadow_BackEnd.exception.CropNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.service.CropService;
@@ -44,14 +46,15 @@ public class CropServiceIMPL implements CropService {
             CropEntity cropEntity = findCrop.get();
             cropEntity.setCropCode(cropDto.getCropCode());
             cropEntity.setCommonName(cropDto.getCommonName());
-            cropEntity.setScientificName(cropDto.getScientificName());
             cropEntity.setImage(cropDto.getImage());
+            cropEntity.setScientificName(cropDto.getScientificName());
             cropEntity.setCategory(cropDto.getCategory());
             cropEntity.setSeason(cropDto.getSeason());
 
             // Fetch and set the FieldEntity
             // Save updated entity if needed (depending on your transactional setup)
         }
+        cropDao.save(mapping.toCropEntity(cropDto));
     }
 
 
@@ -59,7 +62,7 @@ public class CropServiceIMPL implements CropService {
     public void deleteCrop(String cropId) {
         Optional<CropEntity> foundNote = cropDao.findById(cropId);
         if (!foundNote.isPresent()) {
-            throw new FieldNotFoundException("Field not found");
+            throw new CropNotFoundException("Crop not found");
         }else {
             cropDao.deleteById(cropId);
         }

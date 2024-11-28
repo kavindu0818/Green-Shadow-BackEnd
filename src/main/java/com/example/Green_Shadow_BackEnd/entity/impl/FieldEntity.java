@@ -20,7 +20,7 @@ public class FieldEntity implements SuperEntity {
     double  fieldSize;
     @Column(columnDefinition = "LONGTEXT")
     String fieldImage;
-    @OneToMany(mappedBy = "fieldEntity")
+    @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL)  // Add CascadeType.ALL
     List<CropEntity> cropEntityList;
 
     @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
