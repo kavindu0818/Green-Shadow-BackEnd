@@ -4,6 +4,7 @@ import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
 import com.example.Green_Shadow_BackEnd.dto.StaffStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
 import com.example.Green_Shadow_BackEnd.dto.impl.StaffDto;
+import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
 import com.example.Green_Shadow_BackEnd.entity.impl.Role;
 import com.example.Green_Shadow_BackEnd.entity.impl.StaffEntity;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/staff")
+@CrossOrigin(origins = "http://localhost:63342")
 public class StaffController {
 
     @Autowired
@@ -41,16 +43,22 @@ public class StaffController {
             @RequestParam("address") String address,
             @RequestParam("contact") String contactNo,
             @RequestParam("email") String email,
-            @RequestParam("role") String role // Enum as String
+            @RequestParam("role") String role,
+            @RequestParam("fieldCodes")List<FieldEntity> fieldCodes// Enum as String
 
     ) {
         try {
+
+            System.out.println("2" + role);
             // Construct full address
 //            String address = String.join(", ", addressLine1, addressLine2, addressLine3, addressLine4, addressLine5);
 
             // Convert input strings to enums
             StaffDto.Gender genderEnum = StaffDto.Gender.valueOf(gender.toUpperCase());
             StaffDto.Role roleEnum = StaffDto.Role.valueOf(role.toUpperCase());
+
+
+            System.out.println("1" + roleEnum);
 
             // Create StaffDto
             StaffDto staffDto = new StaffDto();
@@ -65,7 +73,7 @@ public class StaffController {
             staffDto.setContact(contactNo);
             staffDto.setEmail(email);
             staffDto.setRole(roleEnum);
-//            staffDto.setFieldCodes(fieldList);
+//            staffDto.setFieldCodes(fieldCodes);
 //            staffDto.setVehicleIds(vehicleList);
 
             // Call the service layer to save the staff

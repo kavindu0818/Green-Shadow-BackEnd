@@ -58,6 +58,7 @@ public class StaffServiceIMPL implements StaffService {
         staffEntity.setContact(staffDto.getContact());
         staffEntity.setEmail(staffDto.getEmail());
         staffEntity.setRole(staffDto.getRole());
+//        staffEntity.setFields(staffDto.getFieldCodes());
 
         // Save the updated entity
         staffDao.save(staffEntity);

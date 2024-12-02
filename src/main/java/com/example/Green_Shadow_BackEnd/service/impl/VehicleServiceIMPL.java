@@ -5,6 +5,7 @@ import com.example.Green_Shadow_BackEnd.dto.CropStatus;
 import com.example.Green_Shadow_BackEnd.dto.VehicleStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.VehicleDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
+import com.example.Green_Shadow_BackEnd.entity.impl.StaffEntity;
 import com.example.Green_Shadow_BackEnd.entity.impl.VehicleEntity;
 import com.example.Green_Shadow_BackEnd.exception.CropNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
@@ -41,6 +42,10 @@ public class VehicleServiceIMPL implements VehicleService {
     @Override
     public void updateVehicle(String vehicleId, VehicleDto vehicleDto) {
         Optional<VehicleEntity> findVehicle = vehicleDao.findById(vehicleId);
+
+//        StaffEntity staffEntity = new StaffEntity();
+//          staffEntity = vehicleDto.getStaffId();
+
         if (!findVehicle.isPresent()) {
             throw new FieldNotFoundException("Vehicle Not Found");
         }else {
@@ -50,7 +55,7 @@ public class VehicleServiceIMPL implements VehicleService {
             findVehicle.get().setFuelType(vehicleDto.getFuelType());
             findVehicle.get().setStatus(vehicleDto.getStatus());
             findVehicle.get().setRemarks(vehicleDto.getRemarks());
-//            findVehicle.get().setSt(vehicleDto.getStaffId());
+//            findVehicle.get().setStaff(vehicleDto.getStaffId());
         }
 
         vehicleDao.save(mapping.toVehicleEntity(vehicleDto));

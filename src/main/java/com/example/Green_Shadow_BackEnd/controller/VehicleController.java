@@ -19,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/vehicle")
+@RequestMapping("api/v1/veh")
+@CrossOrigin(origins = "http://localhost:63342")
+
 public class VehicleController {
 
     @Autowired
@@ -29,14 +31,12 @@ public class VehicleController {
             @RequestParam("code") String code,
             @RequestParam("licensePlateNum") String licensePlateNum,
             @RequestParam("category") String category,
-            @RequestPart("fuelType") String fuelType,
+            @RequestParam("fuelType") String fuelType, // Changed to @RequestParam for consistency
             @RequestParam("status") String status,
             @RequestParam("remarks") String remarks,
-            @RequestParam("staffId") String staffId
-
+            @RequestParam("staffId") String staffId // Ensure this maps correctly
     ) {
         try {
-
             // Build DTO
             VehicleDto vehicleDto = new VehicleDto();
             vehicleDto.setCode(code);
@@ -59,6 +59,7 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @PutMapping(value = "/{vehicleId}")
     public ResponseEntity<Void> updateVehicle(@PathVariable ("vehicleId") String vehicleId,

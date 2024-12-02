@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/equ")
+@CrossOrigin(origins = "http://localhost:63342")
 public class EquipmentserviceController {
 
     @Autowired
@@ -45,6 +46,8 @@ public class EquipmentserviceController {
             equipmentDto.setStatus(status);
             equipmentDto.setStaffId(staffId);
             equipmentDto.setFieldId(field);
+
+            System.out.println(field + "mmmmmmmmmmmmmmmmmmmmm");
             // Save field
             equipmentService.saveEquiment(equipmentDto);
 

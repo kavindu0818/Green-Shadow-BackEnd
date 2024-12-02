@@ -54,7 +54,7 @@ public class EqipmentServiceIMPL implements EquipmentService {
             findEquiment.get().setStatus(equipmentDto.getStatus());
 //            findEquiment.get().setStaff(equipmentDto.getStaffId());
 //            findEquiment.get().setField(equipmentDto.getFieldId());
-//            findVehicle.get().setSt(vehicleDto.getStaffId());
+
         }
 
         equipmentDao.save(mapping.toEquimentEntity(equipmentDto));

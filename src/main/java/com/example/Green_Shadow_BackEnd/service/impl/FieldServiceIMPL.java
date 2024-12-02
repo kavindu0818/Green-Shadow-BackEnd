@@ -48,8 +48,9 @@ public class FieldServiceIMPL implements FieldService {
             findNote.get().setFieldLocation(fieldDto.getFieldLocation());
             findNote.get().setFieldSize(fieldDto.getFieldSize());
             findNote.get().setFieldImage(fieldDto.getFieldImage());
-//            findNote.get().setImage2(fieldDto.getImage2());
         }
+//        fieldDao.save(mapping.toFieldEntity(fieldDto));
+
     }
     @Override
     public void deleteField(String fieldId) {

@@ -29,10 +29,10 @@ public class FieldController {
             @RequestParam("fieldName") String fieldName,
             @RequestParam("fieldLocation") String fieldLocation,
             @RequestParam("fieldSize") Double fieldSize,
-            @RequestPart("fieldImage") MultipartFile fieldImage1,
-            @RequestParam("cropEntityList") String cropEntityList,
-            @RequestParam("staffEntityList") String staffEntityList,
-            @RequestParam("equipmentEntityList") String equipmentEntityList
+            @RequestPart("fieldImage") MultipartFile fieldImage1
+//            @RequestParam("cropEntityList") String cropEntityList,
+//            @RequestParam("staffEntityList") String staffEntityList,
+//            @RequestParam("equipmentEntityList") String equipmentEntityList
 
 
 
@@ -49,9 +49,9 @@ public class FieldController {
             buildFieldDto.setFieldLocation(fieldLocation);
             buildFieldDto.setFieldSize(fieldSize);
             buildFieldDto.setFieldImage(base64ProPic1);
-            buildFieldDto.setCropCodes(cropEntityList);
-            buildFieldDto.setStaffCodes(staffEntityList);
-            buildFieldDto.setEquipmentCodes(equipmentEntityList);
+//            buildFieldDto.setCropCodes(cropEntityList);
+//            buildFieldDto.setStaffCodes(staffEntityList);
+//            buildFieldDto.setEquipmentCodes(equipmentEntityList);
 //            buildFieldDto.setImage2(base64ProPic2);
 
             // Save field
