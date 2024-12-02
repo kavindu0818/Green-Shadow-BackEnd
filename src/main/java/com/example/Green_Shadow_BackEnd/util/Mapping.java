@@ -80,4 +80,16 @@ public class Mapping {
     public List<MonitorLogDto> asMonitorLogDTOList(List<MonitorLogEntity> monitorLogEntities) {
         return modelMapper.map(monitorLogEntities, new TypeToken<List<MonitorLogDto>>() {}.getType());
     }
+
+
+    public UserEntity toUserEntity(UserDto userDto) {
+        return modelMapper.map(userDto, UserEntity.class);
+    }
+
+    public UserDto toUserDTO(UserEntity userEntity) {
+        return modelMapper.map(userEntity, UserDto.class);
+    }
+    public List<UserDto> asUserDTOList(List<UserEntity> userEntities) {
+        return modelMapper.map(userEntities, new TypeToken<List<UserDto>>() {}.getType());
+    }
 }

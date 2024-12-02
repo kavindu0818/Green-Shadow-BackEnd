@@ -3,6 +3,9 @@ package com.example.Green_Shadow_BackEnd.controller;
 import com.example.Green_Shadow_BackEnd.dto.MonitoringLogStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
 import com.example.Green_Shadow_BackEnd.dto.impl.MonitorLogDto;
+import com.example.Green_Shadow_BackEnd.entity.impl.CropEntity;
+import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
+import com.example.Green_Shadow_BackEnd.entity.impl.StaffEntity;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.MonitorLogfoundException;
@@ -20,6 +23,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/mlog")
+@CrossOrigin(origins = "http://localhost:63342")
+
 public class MonitoringlogController {
 
     @Autowired
@@ -31,36 +36,35 @@ public class MonitoringlogController {
             @RequestParam("date") Date date,
             @RequestParam("observation") String observation,
             @RequestPart("observationImage") MultipartFile image,
-            @RequestParam("fieldId") String fieldId,
-            @RequestParam("cropId") String cropId,
-            @RequestParam("staffId") String staffId // Changed to @RequestParam
+            @RequestParam("fieldId") FieldEntity fieldCode,
+            @RequestParam("cropId") CropEntity cropCode,
+            @RequestParam("staffId") StaffEntity staffId
+
     ) {
         try {
             // Convert image to Base64
-            String base64ProPic1 = AppUtil.profilePicToBase64(image.getBytes());
+            String base64Image = AppUtil.profilePicToBase64(image.getBytes());
 
             // Build DTO
             MonitorLogDto monitorLogDto = new MonitorLogDto();
             monitorLogDto.setLogCode(logCode);
             monitorLogDto.setDate(date);
             monitorLogDto.setObservation(observation);
-            monitorLogDto.setObservationImage(base64ProPic1);
-            monitorLogDto.setFieldId(fieldId);
-            monitorLogDto.setCropId(cropId);
-            monitorLogDto.setStaffId(staffId); // Set fieldId properly
+            monitorLogDto.setObservationImage(base64Image);
+            monitorLogDto.setFieldId(fieldCode);
+            monitorLogDto.setCropId(cropCode);
+            monitorLogDto.setStaffId(staffId);
 
-            // Save field
+            // Save monitor log
             monitorLogService.saveMonitorLog(monitorLogDto);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (DataPersistException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @PutMapping(value = "/{monId}")
     public ResponseEntity<Void> updateMonitorLog(@PathVariable ("monId") String monId,
@@ -99,7 +103,7 @@ public class MonitoringlogController {
     }
 
     @GetMapping(value = "/{monId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public MonitoringLogStatus getSelectedMonitor(@PathVariable("monId") String monID){
+    public MonitorLogDto getSelectedMonitor(@PathVariable("monId") String monID){
 //        if (!RegexProcess.noteIdMatcher(noteId)) {
 //            return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
 //        }

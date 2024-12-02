@@ -31,6 +31,6 @@ public class StaffDto implements SuperDTO {
     }
 
     public enum Role {
-        ADMIN, USER, SUPERVISOR
+        ADMINISTRATIVE, SCIENTIST, SUPERVISOR
     }
 }

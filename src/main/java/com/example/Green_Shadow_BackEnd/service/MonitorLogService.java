@@ -13,7 +13,7 @@ public interface MonitorLogService {
 
     void deleteMonitorLog(String monId);
 
-    MonitoringLogStatus getMonitorLog(String monID);
+    MonitorLogDto getMonitorLog(String monID);
 
     List<MonitorLogDto> getAllMonitorLog();
 }
