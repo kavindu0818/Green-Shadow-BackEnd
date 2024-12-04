@@ -3,7 +3,10 @@ import com.example.Green_Shadow_BackEnd.customStatusCodes.SelectedAllError;
 import com.example.Green_Shadow_BackEnd.dao.StaffDao;
 import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
 import com.example.Green_Shadow_BackEnd.dto.StaffStatus;
+import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
+import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
 import com.example.Green_Shadow_BackEnd.dto.impl.StaffDto;
+import com.example.Green_Shadow_BackEnd.entity.impl.CropEntity;
 import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
 import com.example.Green_Shadow_BackEnd.entity.impl.StaffEntity;
 import com.example.Green_Shadow_BackEnd.exception.CropNotFoundException;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -57,7 +61,7 @@ public class StaffServiceIMPL implements StaffService {
         staffEntity.setAddress(staffDto.getAddress());
         staffEntity.setContact(staffDto.getContact());
         staffEntity.setEmail(staffDto.getEmail());
-        staffEntity.setRole(staffDto.getRole());
+//        staffEntity.setRole(staffDto.getRole());
 //        staffEntity.setFields(staffDto.getFieldCodes());
 
         // Save the updated entity
@@ -88,7 +92,28 @@ public class StaffServiceIMPL implements StaffService {
 
     @Override
     public List<StaffDto> getAllStaff() {
-        return mapping.asStaffDTOList( staffDao.findAll());
+        List<StaffEntity> all = staffDao.findAll();
+
+        List<StaffDto> collect = all.stream().map(staffEntity -> {
+            // Map fields
+            List<FieldEntityDto> fieldDTOs = staffEntity.getFields()
+                    .stream()
+                    .map(mapping::toFieldDTO)
+                    .collect(Collectors.toList());
+
+            // Map staff
+            StaffDto staffDTO = mapping.toStaffDTO(staffEntity);
+            staffDTO.setFieldCodes(fieldDTOs);
+            return staffDTO;
+        }).collect(Collectors.toList());
+
+        return collect;
     }
+
+    @Override
+    public StaffEntity findStaffById(String staffId) {
+        return null;
+    }
+
 
 }

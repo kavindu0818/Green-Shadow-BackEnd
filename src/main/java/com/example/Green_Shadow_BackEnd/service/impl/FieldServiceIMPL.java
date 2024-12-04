@@ -74,5 +74,28 @@ public class FieldServiceIMPL implements FieldService {
         return mapping.asNoteDTOList( fieldDao.findAll());
     }
 
+    @Override
+    public FieldEntityDto findFieldByCode(String fieldCode) {
+        FieldEntity fieldEntity = fieldDao.findById(fieldCode).orElse(null);
+        if (fieldEntity == null) {
+            return null;
+        }
+        FieldEntityDto fieldEntityDto = new FieldEntityDto();
+        fieldEntityDto.setFieldCode(fieldEntity.getFieldCode());
+        fieldEntityDto.setFieldName(fieldEntity.getFieldName());
+        fieldEntityDto.setFieldLocation(fieldEntity.getFieldLocation());
+        fieldEntityDto.setFieldSize(fieldEntity.getFieldSize());
+        fieldEntityDto.setFieldImage(fieldEntity.getFieldImage());
+        return fieldEntityDto;
+    }
+
+    @Override
+    public FieldEntity findFieldById(String fieldId) {
+        return null;
+    }
 
 }
+
+
+
+

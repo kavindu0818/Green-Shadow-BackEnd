@@ -23,11 +23,11 @@ public class FieldEntity implements SuperEntity {
     @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL)  // Add CascadeType.ALL
     List<CropEntity> cropEntityList;
 
-    @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST})
     List<StaffEntity> staffEntityList;
 
 
-    @OneToMany(mappedBy = "field")
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
     List<EquipmentEntity> equipmentEntityList;
 
     @OneToOne(mappedBy = "fieldEntity" )

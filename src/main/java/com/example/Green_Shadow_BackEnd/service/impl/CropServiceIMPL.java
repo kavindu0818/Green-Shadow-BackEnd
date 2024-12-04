@@ -3,6 +3,7 @@ package com.example.Green_Shadow_BackEnd.service.impl;
 import com.example.Green_Shadow_BackEnd.dao.CropDao;
 import com.example.Green_Shadow_BackEnd.dto.CropStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
+import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.CropEntity;
 import com.example.Green_Shadow_BackEnd.exception.CropNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -68,19 +70,36 @@ public class CropServiceIMPL implements CropService {
         }
     }
 
-    @Override
     public CropEntityDto getCrop(String cropId) {
-        if(cropDao.existsById(cropId)){
+        if (cropDao.existsById(cropId)) {
             var selectedCrop = cropDao.getReferenceById(cropId);
-            return  mapping.toCropDTO(selectedCrop);
-        }else {
-//            return new SelectedAllError("2","Select not Found");
+
+            // Map the selected crop to CropEntityDto
+            CropEntityDto cropDTO = mapping.toCropDTO(selectedCrop);
+
+            // Map the associated FieldEntity and set it in CropEntityDto
+            FieldEntityDto fieldDTO = mapping.toFieldDTO(selectedCrop.getFieldEntity());
+            cropDTO.setField_code(fieldDTO);
+
+            return cropDTO;
+        } else {
+            // Handle the case where the crop ID is not found
             return null;
         }
     }
+
     @Override
     public List<CropEntityDto> getAllCrop() {
-        return mapping.asCropDTOList( cropDao.findAll());
+        List<CropEntity> all = cropDao.findAll();
+
+        List<CropEntityDto> collect = all.stream().map(cropEntity -> {
+            FieldEntityDto fieldDTO = mapping.toFieldDTO(cropEntity.getFieldEntity());
+            CropEntityDto cropDTO = mapping.toCropDTO(cropEntity);
+            cropDTO.setField_code(fieldDTO);
+            return cropDTO;
+        }).collect(Collectors.toList());
+
+        return collect;
     }
 
 

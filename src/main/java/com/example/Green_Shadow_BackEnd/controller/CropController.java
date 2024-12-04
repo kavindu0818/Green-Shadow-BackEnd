@@ -40,21 +40,19 @@ public class CropController {
             @RequestPart("image") MultipartFile image,
             @RequestParam("category") String category,
             @RequestParam("season") String season,
-            @RequestParam("field_code") String fieldCode // Accept as String (ID)
+            @RequestParam("field_code") String fieldCode // Accept as String
     ) {
         try {
             // Convert image to Base64
             String base64ProPic1 = AppUtil.profilePicToBase64(image.getBytes());
 
-            // Retrieve the FieldEntity based on the fieldCode
-            FieldEntity fieldEntity = new FieldEntity();
-            fieldEntity.setFieldCode(fieldCode);// You need a service method to fetch the FieldEntity
-
-            if (fieldEntity == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // If FieldEntity is not found
+            // Fetch FieldEntityDto using a service method
+            FieldEntityDto fieldEntityDto = fieldService.findFieldByCode(fieldCode);
+            if (fieldEntityDto == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // If FieldEntityDto is not found
             }
 
-            // Build DTO
+            // Build CropEntityDto
             CropEntityDto cropEntityDto = new CropEntityDto();
             cropEntityDto.setCropCode(cropCode);
             cropEntityDto.setCommonName(commonName);
@@ -62,9 +60,9 @@ public class CropController {
             cropEntityDto.setImage(base64ProPic1);
             cropEntityDto.setCategory(category);
             cropEntityDto.setSeason(season);
-            cropEntityDto.setField_code(fieldEntity); // Set fieldEntity here
+            cropEntityDto.setField_code(fieldEntityDto); // Set the resolved FieldEntityDto
 
-            // Save field
+            // Save crop using the service
             cropService.saveCrop(cropEntityDto);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -101,7 +99,7 @@ public class CropController {
             @RequestParam MultipartFile image,
             @RequestParam String category,
             @RequestParam String season,
-            @RequestParam String field_code // Use fieldCode instead of FieldEntity
+            @RequestParam FieldEntityDto field_code // Use fieldCode instead of FieldEntity
     ) {
         try {
             // Convert image file to Base64
@@ -113,8 +111,8 @@ public class CropController {
 //                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid fieldCode: " + fieldCode);
 //            }
 
-            FieldEntity fieldEntity = new FieldEntity();
-            fieldEntity.setFieldCode(field_code);
+//            FieldEntity fieldEntity = new FieldEntity();
+//            fieldEntity.setFieldCode(field_code);
             // Create a DTO with the received data
             CropEntityDto cropDto = new CropEntityDto();
             cropDto.setCropCode(cropCode);
@@ -123,7 +121,7 @@ public class CropController {
             cropDto.setImage(base64ProPic); // Save Base64 representation
             cropDto.setCategory(category);
             cropDto.setSeason(season);
-            cropDto.setField_code(fieldEntity);
+            cropDto.setField_code(field_code);
 
             // Call the service layer to update the crop
             cropService.updateCrop(cropCode, cropDto);

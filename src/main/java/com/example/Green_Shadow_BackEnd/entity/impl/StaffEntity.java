@@ -31,7 +31,7 @@ public class StaffEntity implements SuperEntity {
     @Enumerated(EnumType.STRING)
     Role role;  // Update this to your custom enum type
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(
             name = "staff_field",
             joinColumns = @JoinColumn(name = "staff_id"),
@@ -42,12 +42,11 @@ public class StaffEntity implements SuperEntity {
     @OneToMany(mappedBy = "staff")
     List<VehicleEntity> vehicleEntities;
 
-    @OneToMany(mappedBy = "staff")
+    @OneToMany(mappedBy = "staff" ,cascade = CascadeType.ALL)
     List<EquipmentEntity> equipmentEntityList;
 
     @OneToOne(mappedBy = "staffEntity")
     MonitorLogEntity log;
 
-    public void setRole(StaffDto.Role role) {
-    }
+
 }

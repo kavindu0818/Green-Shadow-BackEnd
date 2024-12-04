@@ -3,13 +3,13 @@ package com.example.Green_Shadow_BackEnd.service.impl;
 
 import com.example.Green_Shadow_BackEnd.customStatusCodes.SelectedAllError;
 import com.example.Green_Shadow_BackEnd.dao.EquipmentDao;
+import com.example.Green_Shadow_BackEnd.dao.FieldDao;
+import com.example.Green_Shadow_BackEnd.dao.StaffDao;
 import com.example.Green_Shadow_BackEnd.dto.EquipmentStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
 import com.example.Green_Shadow_BackEnd.dto.impl.EquipmentDto;
-import com.example.Green_Shadow_BackEnd.entity.impl.EquipmentEntity;
-import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
-import com.example.Green_Shadow_BackEnd.entity.impl.StaffEntity;
-import com.example.Green_Shadow_BackEnd.entity.impl.VehicleEntity;
+import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
+import com.example.Green_Shadow_BackEnd.entity.impl.*;
 import com.example.Green_Shadow_BackEnd.exception.CropNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,6 +34,12 @@ public class EqipmentServiceIMPL implements EquipmentService {
     private EquipmentDao equipmentDao;
     @Autowired
     private Mapping mapping;
+
+    @Autowired
+    private StaffDao staffDao;
+
+    @Autowired
+    private FieldDao fieldDao;
     @Override
     public void saveEquiment(EquipmentDto equipmentDto) {
         EquipmentEntity savedEquiment =
@@ -72,18 +79,46 @@ public class EqipmentServiceIMPL implements EquipmentService {
 
     @Override
     public EquipmentStatus getEquiment(String equID) {
-        if(equipmentDao.existsById(equID)){
-            var selectedEquiment = equipmentDao.getReferenceById(equID);
-            return mapping.toEquimentDTO(selectedEquiment);
-        }else {
-            return new SelectedAllError("2","Select not Found");
+        if (equipmentDao.existsById(equID)) {
+            var selectedCrop = equipmentDao.getReferenceById(equID);
+
+            // Map the selected crop to CropEntityDto
+            EquipmentDto equipmentDto = mapping.toEquimentDTO(selectedCrop);
+
+            // Map the associated FieldEntity and set it in CropEntityDto
+            FieldEntityDto fieldDTO = mapping.toFieldDTO(selectedCrop.getField());
+            equipmentDto.setFieldId(fieldDTO);
+
+            return equipmentDto;
+        } else {
+            // Handle the case where the crop ID is not found
+            return null;
         }
     }
 
     @Override
     public List<EquipmentDto> getAllEquiment() {
-        return mapping.asEquimentDTOList(equipmentDao.findAll());
+            List<EquipmentEntity> all = equipmentDao.findAll();
+
+            List<EquipmentDto> collect = all.stream().map(equipmentEntity -> {
+                EquipmentDto equipmentDto = mapping.toEquimentDTO(equipmentEntity);
+
+                // Null check for field
+                if (equipmentEntity.getField() != null) {
+                    FieldEntityDto fieldDTO = mapping.toFieldDTO(equipmentEntity.getField());
+                    equipmentDto.setFieldId(fieldDTO);
+                } else {
+                    equipmentDto.setFieldId(null); // Explicitly set to null
+                }
+
+                return equipmentDto;
+            }).collect(Collectors.toList());
+
+            return collect;
+        }
+
     }
 
 
-}
+
+

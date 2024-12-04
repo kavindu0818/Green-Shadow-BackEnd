@@ -17,5 +17,5 @@ public class CropEntityDto implements CropStatus {
     private String image;
     private String category;
     private String season;
-    private FieldEntity field_code;;
+    private FieldEntityDto field_code;;
 }

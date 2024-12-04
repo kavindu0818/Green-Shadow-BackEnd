@@ -1,19 +1,12 @@
 package com.example.Green_Shadow_BackEnd.controller;
 
-import com.example.Green_Shadow_BackEnd.dto.FieldStatus;
-import com.example.Green_Shadow_BackEnd.dto.StaffStatus;
-import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
 import com.example.Green_Shadow_BackEnd.dto.impl.StaffDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
 import com.example.Green_Shadow_BackEnd.entity.impl.Role;
-import com.example.Green_Shadow_BackEnd.entity.impl.StaffEntity;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.StaffNotFoundException;
 import com.example.Green_Shadow_BackEnd.service.StaffService;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,29 +29,20 @@ public class StaffController {
             @RequestParam("id") String id,
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
-            @RequestParam("designation") String designation, // Enum as String
-            @RequestParam("gender") String gender, // Enum as String
+            @RequestParam("designation") String designation,
+            @RequestParam("gender") String gender,
             @RequestParam("joinedDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date joinedDate,
             @RequestParam("dob") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dob,
             @RequestParam("address") String address,
             @RequestParam("contact") String contactNo,
             @RequestParam("email") String email,
-            @RequestParam("role") String role,
-            @RequestParam("fieldCodes")List<FieldEntity> fieldCodes// Enum as String
-
+            @RequestParam("role") String role,  // Accept role as a String
+            @RequestParam("fieldCodes") List<FieldEntity> fieldCodes
     ) {
         try {
-
-            System.out.println("2" + role);
-            // Construct full address
-//            String address = String.join(", ", addressLine1, addressLine2, addressLine3, addressLine4, addressLine5);
-
-            // Convert input strings to enums
+            // Convert role and gender strings to enums
             StaffDto.Gender genderEnum = StaffDto.Gender.valueOf(gender.toUpperCase());
-            StaffDto.Role roleEnum = StaffDto.Role.valueOf(role.toUpperCase());
-
-
-            System.out.println("1" + roleEnum);
+            Role roleEnum = Role.valueOf(role.toUpperCase());
 
             // Create StaffDto
             StaffDto staffDto = new StaffDto();
@@ -72,11 +56,9 @@ public class StaffController {
             staffDto.setAddress(address);
             staffDto.setContact(contactNo);
             staffDto.setEmail(email);
-            staffDto.setRole(roleEnum);
-//            staffDto.setFieldCodes(fieldCodes);
-//            staffDto.setVehicleIds(vehicleList);
+//            staffDto.setRole(roleEnum);
 
-            // Call the service layer to save the staff
+            // Save the staff
             staffService.saveStaff(staffDto);
 
             return new ResponseEntity<>(HttpStatus.CREATED);

@@ -21,11 +21,11 @@ public class EquipmentEntity implements SuperEntity {
 
    private String status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     StaffEntity staff;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "field_code")
     FieldEntity field;
 
