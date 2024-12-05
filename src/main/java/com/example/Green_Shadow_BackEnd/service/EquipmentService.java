@@ -14,10 +14,11 @@ public interface EquipmentService {
 
     void updateCrop(String equId, EquipmentDto equipmentDto);
 
-    void deleteCrop(String equId);
+
 
     EquipmentStatus getEquiment(String equID);
 
     List<EquipmentDto> getAllEquiment();
 
+    void deleteEqu(String equId);
 }

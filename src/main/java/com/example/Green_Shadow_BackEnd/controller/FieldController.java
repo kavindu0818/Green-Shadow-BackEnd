@@ -15,9 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:63342", allowedHeaders = "*")
 @RestController
 @RequestMapping("api/v1/field")
-@CrossOrigin(origins = "http://localhost:63342")
 public class FieldController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class FieldController {
 
 
 
-            ) {
+    ) {
         try {
             // Convert images to Base64
             String base64ProPic1 = AppUtil.profilePicToBase64(fieldImage1.getBytes());
@@ -66,6 +66,9 @@ public class FieldController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
 
 
     @PutMapping(value = "/{fieldId}")
@@ -112,7 +115,7 @@ public class FieldController {
         return fieldService.getField(fieldId);
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FieldEntityDto> getALlNotes(){
+    public List<FieldEntityDto> getAllFields() {
         return fieldService.getAllField();
     }
 }

@@ -5,10 +5,12 @@ import com.example.Green_Shadow_BackEnd.dto.CropStatus;
 import com.example.Green_Shadow_BackEnd.dto.impl.CropEntityDto;
 import com.example.Green_Shadow_BackEnd.dto.impl.FieldEntityDto;
 import com.example.Green_Shadow_BackEnd.entity.impl.CropEntity;
+import com.example.Green_Shadow_BackEnd.entity.impl.FieldEntity;
 import com.example.Green_Shadow_BackEnd.exception.CropNotFoundException;
 import com.example.Green_Shadow_BackEnd.exception.DataPersistException;
 import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.service.CropService;
+import com.example.Green_Shadow_BackEnd.service.FieldService;
 import com.example.Green_Shadow_BackEnd.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,9 @@ public class CropServiceIMPL implements CropService {
     @Autowired
     private Mapping mapping;
 
+    @Autowired
+    private FieldService fieldService;
+
 
     @Override
     public void saveCrop(CropEntityDto cropDto) {
@@ -43,21 +48,33 @@ public class CropServiceIMPL implements CropService {
     public void updateCrop(String cropId, CropEntityDto cropDto) {
         Optional<CropEntity> findCrop = cropDao.findById(cropId);
         if (!findCrop.isPresent()) {
-            throw new FieldNotFoundException("Field Not Found");
-        } else {
-            CropEntity cropEntity = findCrop.get();
-            cropEntity.setCropCode(cropDto.getCropCode());
-            cropEntity.setCommonName(cropDto.getCommonName());
-            cropEntity.setImage(cropDto.getImage());
-            cropEntity.setScientificName(cropDto.getScientificName());
-            cropEntity.setCategory(cropDto.getCategory());
-            cropEntity.setSeason(cropDto.getSeason());
-
-            // Fetch and set the FieldEntity
-            // Save updated entity if needed (depending on your transactional setup)
+            throw new FieldNotFoundException("Crop Not Found");
         }
-        cropDao.save(mapping.toCropEntity(cropDto));
+
+        CropEntity cropEntity = findCrop.get();
+
+        // Map DTO fields to Entity fields
+        cropEntity.setCropCode(cropDto.getCropCode());
+        cropEntity.setCommonName(cropDto.getCommonName());
+        cropEntity.setImage(cropDto.getImage());
+        cropEntity.setScientificName(cropDto.getScientificName());
+        cropEntity.setCategory(cropDto.getCategory());
+        cropEntity.setSeason(cropDto.getSeason());
+
+        // Convert FieldEntityDto to FieldEntity
+        FieldEntity fieldEntity = fieldService.findFieldById(cropDto.getField_code().getFieldCode());
+        if (fieldEntity == null) {
+            throw new FieldNotFoundException("Field Not Found for Code: " + cropDto.getField_code().getFieldCode());
+        }
+
+        // Set the FieldEntity in CropEntity
+        cropEntity.setFieldEntity(fieldEntity);
+
+        // Save the updated crop entity
+        cropDao.save(cropEntity);
     }
+
+
 
 
     @Override

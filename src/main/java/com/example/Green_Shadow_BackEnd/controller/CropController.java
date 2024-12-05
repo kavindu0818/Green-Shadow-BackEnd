@@ -40,7 +40,7 @@ public class CropController {
             @RequestPart("image") MultipartFile image,
             @RequestParam("category") String category,
             @RequestParam("season") String season,
-            @RequestParam("field_code") String fieldCode // Accept as String
+            @RequestParam("field_code") String fieldCode
     ) {
         try {
             // Convert image to Base64
@@ -75,6 +75,55 @@ public class CropController {
         }
     }
 
+    @PutMapping(value = "/{cropCode}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateCrop(
+            @PathVariable String cropCode,
+            @RequestParam String commonName,
+            @RequestParam String scientificName,
+            @RequestParam MultipartFile image,
+            @RequestParam String category,
+            @RequestParam String season,
+            @RequestParam String fieldCode // Use fieldCode as a simple String
+    ) {
+        try {
+            // Convert image file to Base64
+            String base64ProPic = AppUtil.profilePicToBase64(image.getBytes());
+
+            // Retrieve the FieldEntity from the database using the fieldCode
+            FieldEntity fieldEntity = fieldService.findFieldById(fieldCode);
+            if (fieldEntity == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Invalid fieldCode: " + fieldCode);
+            }
+
+            // Create a DTO with the received data
+            CropEntityDto cropDto = new CropEntityDto();
+            cropDto.setCropCode(cropCode);
+            cropDto.setCommonName(commonName);
+            cropDto.setScientificName(scientificName);
+            cropDto.setImage(base64ProPic); // Save Base64 representation
+            cropDto.setCategory(category);
+            cropDto.setSeason(season);
+
+            // Set the FieldEntityDto in the CropEntityDto
+            FieldEntityDto fieldEntityDto = new FieldEntityDto();
+            fieldEntityDto.setFieldCode(fieldCode); // Assign fieldCode to the DTO
+            cropDto.setField_code(fieldEntityDto);
+
+            // Call the service layer to update the crop
+            cropService.updateCrop(cropCode, cropDto);
+
+            return ResponseEntity.ok("Crop updated successfully!");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error processing the image: " + e.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error updating crop: " + ex.getMessage());
+        }
+    }
+
+
 
 //    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
 //            produces = MediaType.APPLICATION_JSON_VALUE)
@@ -91,53 +140,52 @@ public class CropController {
 //        }
 //    }
 
-    @PutMapping(value = "/{cropCode}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> updateCrop(
-            @PathVariable String cropCode,
-            @RequestParam String commonName,
-            @RequestParam String scientificName,
-            @RequestParam MultipartFile image,
-            @RequestParam String category,
-            @RequestParam String season,
-            @RequestParam FieldEntityDto field_code // Use fieldCode instead of FieldEntity
-    ) {
-        try {
-            // Convert image file to Base64
-            String base64ProPic = AppUtil.profilePicToBase64(image.getBytes());
-
-            // Retrieve the FieldEntity from the database using the fieldCode
-//            FieldEntity fieldEntity = fieldService.findByFieldCode(fieldCode);
-//            if (fieldEntity == null) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid fieldCode: " + fieldCode);
+//    @PutMapping(value = "/{cropCode}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<String> updateCrop(
+//            @PathVariable String cropCode,
+//            @RequestParam String commonName,
+//            @RequestParam String scientificName,
+//            @RequestParam MultipartFile image,
+//            @RequestParam String category,
+//            @RequestParam String season,
+//            @RequestParam String fieldCode // Use String for fieldCode
+//    ) {
+//        try {
+//            // Convert image file to Base64
+//            String base64ProPic = AppUtil.profilePicToBase64(image.getBytes());
+//
+//            // Retrieve the FieldEntity from the database using the fieldCode
+//            FieldEntityDto fieldEntityDto = fieldService.findFieldByCode(fieldCode);
+//            if (fieldEntityDto == null) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                        .body("Invalid fieldCode: " + fieldCode);
 //            }
-
-//            FieldEntity fieldEntity = new FieldEntity();
-//            fieldEntity.setFieldCode(field_code);
-            // Create a DTO with the received data
-            CropEntityDto cropDto = new CropEntityDto();
-            cropDto.setCropCode(cropCode);
-            cropDto.setCommonName(commonName);
-            cropDto.setScientificName(scientificName);
-            cropDto.setImage(base64ProPic); // Save Base64 representation
-            cropDto.setCategory(category);
-            cropDto.setSeason(season);
-            cropDto.setField_code(field_code);
-
-            // Call the service layer to update the crop
-            cropService.updateCrop(cropCode, cropDto);
-
-            return ResponseEntity.ok("Crop updated successfully!");
-        } catch (IOException e) {
-            // Handle file conversion errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error processing the image: " + e.getMessage());
-        } catch (Exception ex) {
-            // Handle any other exceptions
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error updating crop: " + ex.getMessage());
-        }
-    }
-
+//
+//            // Create a DTO with the received data
+//            CropEntityDto cropDto = new CropEntityDto();
+//            cropDto.setCropCode(cropCode);
+//            cropDto.setCommonName(commonName);
+//            cropDto.setScientificName(scientificName);
+//            cropDto.setImage(base64ProPic); // Save Base64 representation
+//            cropDto.setCategory(category);
+//            cropDto.setSeason(season);
+//            cropDto.setField_code(fieldEntityDto);
+//
+//
+//            System.out.println(cropDto.getCropCode());// Set the retrieved FieldEntity
+//
+//            // Call the service layer to update the crop
+//            cropService.updateCrop(cropCode, cropDto);
+//
+//            return ResponseEntity.ok("Crop updated successfully!");
+//        } catch (IOException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error processing the image: " + e.getMessage());
+//        } catch (Exception ex) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body("Error updating crop: " + ex.getMessage());
+//        }
+//    }
 
 
 

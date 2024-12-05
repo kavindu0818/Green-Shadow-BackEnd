@@ -31,11 +31,9 @@ public class FieldServiceIMPL implements FieldService {
 
     @Override
     public void saveField(FieldEntityDto fieldDto) {
-        FieldEntity savedUser =
-                fieldDao.save(mapping.toFieldEntity(fieldDto));
-        if (savedUser == null) {
-            throw new DataPersistException("Field not saved");
-        }
+        FieldEntity fieldEntity = mapping.toFieldEntity(fieldDto);
+
+        fieldDao.save(fieldEntity);
     }
     @Override
     public void updateField(String noteId, FieldEntityDto fieldDto) {
@@ -91,10 +89,21 @@ public class FieldServiceIMPL implements FieldService {
 
     @Override
     public FieldEntity findFieldById(String fieldId) {
-        return null;
+        FieldEntity fieldEntity = fieldDao.findById(fieldId).orElse(null);
+        if (fieldEntity == null) {
+            return null;
+        }
+//        FieldEntityDto fieldEntityDto = new FieldEntityDto();
+//        fieldEntityDto.setFieldCode(fieldEntity.getFieldCode());
+//        fieldEntityDto.setFieldName(fieldEntity.getFieldName());
+//        fieldEntityDto.setFieldLocation(fieldEntity.getFieldLocation());
+//        fieldEntityDto.setFieldSize(fieldEntity.getFieldSize());
+//        fieldEntityDto.setFieldImage(fieldEntity.getFieldImage());
+        return fieldEntity;
     }
-
 }
+
+
 
 
 

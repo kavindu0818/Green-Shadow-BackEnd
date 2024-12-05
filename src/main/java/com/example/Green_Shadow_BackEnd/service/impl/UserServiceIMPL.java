@@ -13,6 +13,9 @@ import com.example.Green_Shadow_BackEnd.exception.FieldNotFoundException;
 import com.example.Green_Shadow_BackEnd.service.UserService;
 import com.example.Green_Shadow_BackEnd.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,5 +75,12 @@ public class UserServiceIMPL implements UserService {
     @Override
     public List<UserDto> getAllUser() {
         return mapping.asUserDTOList(userDao.findAll());
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return username ->
+                (UserDetails) userDao.findByEmail(username)
+                        .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 }

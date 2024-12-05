@@ -36,7 +36,7 @@ public class EquipmentserviceController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveEquipment(
-            @RequestParam("equipmentId") String equipmentId,
+            @RequestParam("EquipmentId") String equipmentId,
             @RequestParam("name") String name,
             @RequestParam("equipmentType") String equipmentType,
             @RequestParam("status") String status,
@@ -94,12 +94,12 @@ public class EquipmentserviceController {
     }
 
     @DeleteMapping(value = "/{equId}")
-    public ResponseEntity<Void> deleteNote(@PathVariable ("equId") String equId){
+    public ResponseEntity<Void> deleteEqu(@PathVariable ("equId") String equId){
         try {
 //            if (!RegexProcess.noteIdMatcher(fieldId)) {
 //                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //            }
-            equipmentService.deleteCrop(equId);
+            equipmentService.deleteEqu(equId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (EquipmentNotFoundException e){
             e.printStackTrace();
@@ -111,7 +111,7 @@ public class EquipmentserviceController {
     }
 
     @GetMapping(value = "/{equId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public EquipmentStatus getSelectedCrop(@PathVariable("equId") String equID){
+    public EquipmentStatus getSelectedEqu(@PathVariable("equId") String equID){
 //        if (!RegexProcess.noteIdMatcher(noteId)) {
 //            return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
 //        }

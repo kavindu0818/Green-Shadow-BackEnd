@@ -59,7 +59,7 @@ public class EqipmentServiceIMPL implements EquipmentService {
             findEquiment.get().setName(equipmentDto.getName());
             findEquiment.get().setEquipmentType(equipmentDto.getEquipmentType());
             findEquiment.get().setStatus(equipmentDto.getStatus());
-//            findEquiment.get().setStaff(equipmentDto.getStaffId());
+//          findEquiment.get().setStaff(equipmentDto.getStaffId());
 //            findEquiment.get().setField(equipmentDto.getFieldId());
 
         }
@@ -67,15 +67,6 @@ public class EqipmentServiceIMPL implements EquipmentService {
         equipmentDao.save(mapping.toEquimentEntity(equipmentDto));
     }
 
-    @Override
-    public void deleteCrop(String equId) {
-        Optional<EquipmentEntity> findEquiment = equipmentDao.findById(equId);
-        if (!findEquiment.isPresent()) {
-            throw new CropNotFoundException("Field not found");
-        }else {
-            equipmentDao.deleteById(equId);
-        }
-    }
 
     @Override
     public EquipmentStatus getEquiment(String equID) {
@@ -117,7 +108,20 @@ public class EqipmentServiceIMPL implements EquipmentService {
             return collect;
         }
 
+    @Override
+    public void deleteEqu(String equId) {
+        equipmentDao.deleteById(equId);
     }
+//        Optional<EquipmentEntity> findEquiment = equipmentDao.findById(equId);
+//        if (!findEquiment.isPresent()) {
+//            throw new CropNotFoundException("Field not found");
+//        }else {
+//            equipmentDao.deleteById(equId);
+//        }
+//    }
+    }
+
+
 
 
 
